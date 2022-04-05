@@ -6,8 +6,8 @@ spec:
   group: misrecursos.aplicacion
   versions:
     - name: v1alpha1
-      served: true
-      storage: true
+      served: false
+      storage: false
       schema:
         openAPIV3Schema:
           type: object
@@ -21,6 +21,35 @@ spec:
                   type: string
                 replicas:
                   type: integer
+    - name: v1alpha2
+      served: true
+      storage: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+              required: [componentes,image,replicas]
+              properties:
+                componentes:
+                  type: string
+                image:
+                  type: string
+                replicas:
+                  type: integer
+                  minimum: 1
+                  maximum: 10
+            status: 
+              type: object
+              properties:
+                replicas:
+                  type: integer
+      subresources:
+        status: { }
+        scale:
+          specReplicasPath: .spec.replicas
+          statusReplicasPath: .status.replicas
   scope: Namespaced
   names:
     plural: aplicaciones

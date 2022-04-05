@@ -5,4 +5,4 @@ metadata:
 spec:
   componentes: componentes-A-y-B
   image: imagen-base-de-los-componentes
-  replicas: 3
+  replicas: 1

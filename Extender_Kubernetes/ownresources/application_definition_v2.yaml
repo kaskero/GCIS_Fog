@@ -28,8 +28,10 @@ spec:
                             type: string
                           image:
                             type: string
+                            required: true
                 replicas:
                   type: integer
+                  minimum: 1
   scope: Namespaced
   names:
     plural: aplicaciones
