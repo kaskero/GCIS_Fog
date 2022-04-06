@@ -8,7 +8,6 @@ version = "v1alpha3"
 namespace = "default"
 plural = "aplicaciones"
 # nombre = "aplicacion-de-prueba"
-componente = tipos.componente
 
 
 def controlador():
@@ -16,6 +15,14 @@ def controlador():
 	config.load_kube_config("/etc/rancher/k3s/k3s.yaml")  # Cargamos la configuracion del cluster
 
 	cliente = client.CustomObjectsApi()  # Creamos el cliente de la API
+
+	cliente_extension = client.ApiextensionsV1Api() # Seria interesante que añada el CRD directamente
+
+	# añadir comprobaciones de apiexception
+	#cliente_extension.delete_custom_resource_definition("aplicaciones.misrecursos.aplicacion")
+	cliente_extension.create_custom_resource_definition(tipos.CRD_app())
+	print("He pasado la CRD. Compruebalo y pulsa una tecla para continuar.")
+	input()
 
 	# print("Listado de aplicaciones desplegadas en el cluster.")
 	# listado_aplicaciones=cliente.list_namespaced_custom_object(grupo,version,namespace,plural,pretty="true")
@@ -72,12 +79,14 @@ def mostrar_datos(nombre, cliente):
 	# print(aplicacion_desplegada)
 
 
-def conciliar_spec_status(nombre, cliente):
+def conciliar_spec_status(nombre,cliente):
 
 	# Esta funcien es llamada por el watcher cuando hay un evento ADDED o MODIFIED.
 	# Habria que chequear las replicas, las versiones...
 	# De momento esta version solo va a mirar el numero de replicas.
 	# Chequea si la aplicacion que ha generado el evento esta al día en .spec y .status
+
+	cliente_despliegue = client.AppsV1Api()
 
 	# Miro el spec.
 	aplicacion_deseada = cliente.get_namespaced_custom_object(grupo, version, namespace, plural, nombre)
@@ -87,14 +96,17 @@ def conciliar_spec_status(nombre, cliente):
 
 	# Compruebo.
 
-	if aplicacion_deseada['spec']['replicas'] != aplicacion_desplegada['status']['replicas']:
-		if aplicacion_deseada['spec']['replicas'] > aplicacion_desplegada['status']['replicas']:
+	# ESTO ES UNA PRUEBA HASTA QUE PUEDA ACCEDER AL STATUS
+	cliente_despliegue.create_namespaced_deployment(namespace, tipos.despliegue_aplicacion(nombre))
+
+	if aplicacion_deseada['spec']['replicas'] != aplicacion_desplegada['spec']['replicas']:
+		if aplicacion_deseada['spec']['replicas'] > aplicacion_desplegada['spec']['replicas']:
 			pass
 			# En caso de modificacion del numero de replicas o objeto recien añadido.
 			# Habria que desplegar las replicas restantes.
 			# for i in aplicacion_deseada['spec']['replicas'] - aplicacion_desplegada['status']['replicas']:
 			# 	desplegar_replica()
-		if aplicacion_deseada['spec']['replicas'] < aplicacion_desplegada['status']['replicas']:
+		if aplicacion_deseada['spec']['replicas'] < aplicacion_desplegada['spec']['replicas']: # Actualizar a 'status' cuando pueda acceder
 			pass
 			# En caso de modificacion del numero de replicas.
 			# Habria que eliminar las replicas sobrantes.

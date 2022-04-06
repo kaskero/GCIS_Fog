@@ -29,7 +29,7 @@ def mi_watcher(cliente):
         if tipo != 'DELETED':
             # Lógica para llevar el recurso al estado deseado.
             mi_controlador_aplicaciones.mostrar_datos(objeto['metadata']['name'], cliente)
-            # mi_controlador_aplicaciones.conciliar_spec_status(objeto['metadata']['name'], cliente)
+            mi_controlador_aplicaciones.conciliar_spec_status(objeto['metadata']['name'], cliente)
         # else:
             # Lógica para borrar lo asociado al recurso.
 
