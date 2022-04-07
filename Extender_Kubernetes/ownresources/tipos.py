@@ -1,6 +1,5 @@
 # Tipos para la definicion de aplicaciones.
 import yaml
-import json
 
 def CRD_app():
     with open("/home/julen/Desktop/GCIS_Fog/Extender_Kubernetes/ownresources/application_definition.yaml", 'r') as stream:
@@ -32,41 +31,57 @@ def componente(nombre, imagen, anterior, siguiente):
     }
     return componente
 
-def despliegue_aplicacion(nombre):
+def deployment_aplicacion(nombre, replicas): # Añadir replicas como input
     with open("/home/julen/Desktop/multipass_k3s/1-create-deployment.yaml", 'r') as stream:
         despliegue_de_fichero = yaml.safe_load(stream)
     despliegue_de_fichero['metadata']['name'] = despliegue_de_fichero['metadata']['name'] + '-' +nombre
+    despliegue_de_fichero['spec']['replicas'] = replicas
     return despliegue_de_fichero
-    despliegue = {
-        'apiVersion': 'apps/v1',
-        'kind': 'Deployment',
-        'metadata': {
-            'name': 'nginx-deployment',
-            'labels':{
-                'app': 'nginx'
-            }
-        },
-        'spec': {
-            'containers': {
-                'name': 'nginx',
-                'image': 'piotrzan/nginx-demo:green',
-                'ports': {
-                    'containerPort': '80'
-                },
-                'resources': {
-                    'requests': {
-                        'cpu': '50m',
-                        'memory': '8M'
-                    },
-                    'limits': {
-                        'cpu': '100m',
-                        'memory': '16M'
-                    }
-                }
-            }
-        },
-        'nodeSelector': {
-            'node-type': 'multipass'
-        }
-    }
+    # despliegue = {
+    #     'apiVersion': 'apps/v1',
+    #     'kind': 'Deployment',
+    #     'metadata': {
+    #         'name': 'nginx-deployment' + '-' +nombre,
+    #         'labels':{
+    #             'app': 'nginx'
+    #         }
+    #     },
+    #     'spec': {
+    #         'replicas': replicas,
+    #         'selector': {
+    #             'matchLabels': {
+    #                 'app': 'nginx'
+    #             }
+    #         },
+    #         'template': {
+    #             'metadata': {
+    #                 'labels': {
+    #                     'app': 'nginx'
+    #                 }
+    #             },
+    #             'spec': {
+    #                 'containers': [{
+    #                     'name': 'nginx',
+    #                     'image': 'piotrzan/nginx-demo:green',
+    #                     'ports': {
+    #                         'containerPort': '80'
+    #                     },
+    #                     'resources': {
+    #                         'requests': {
+    #                             'cpu': '50m',
+    #                             'memory': '8M'
+    #                         },
+    #                         'limits': {
+    #                             'cpu': '100m',
+    #                             'memory': '16M'
+    #                         }
+    #                     }
+    #                 }
+    #             } ],
+    #             'nodeSelector': {
+    #                 'node-type': 'multipass'
+    #             }
+    #         }
+    #     }
+    # }
     # return despliegue

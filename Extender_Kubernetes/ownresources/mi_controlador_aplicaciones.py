@@ -79,7 +79,7 @@ def mostrar_datos(nombre, cliente):
 	# print(aplicacion_desplegada)
 
 
-def conciliar_spec_status(nombre,cliente):
+def conciliar_spec_status(nombre, replicas_solicitadas, cliente):
 
 	# Esta funcien es llamada por el watcher cuando hay un evento ADDED o MODIFIED.
 	# Habria que chequear las replicas, las versiones...
@@ -97,7 +97,7 @@ def conciliar_spec_status(nombre,cliente):
 	# Compruebo.
 
 	# ESTO ES UNA PRUEBA HASTA QUE PUEDA ACCEDER AL STATUS
-	cliente_despliegue.create_namespaced_deployment(namespace, tipos.despliegue_aplicacion(nombre))
+	cliente_despliegue.create_namespaced_deployment(namespace, tipos.deployment_aplicacion(nombre, replicas_solicitadas))
 
 	if aplicacion_deseada['spec']['replicas'] != aplicacion_desplegada['spec']['replicas']:
 		if aplicacion_deseada['spec']['replicas'] > aplicacion_desplegada['spec']['replicas']:
@@ -112,6 +112,12 @@ def conciliar_spec_status(nombre,cliente):
 			# Habria que eliminar las replicas sobrantes.
 			# for i in aplicacion_deseada['status']['replicas'] - aplicacion_desplegada['spec']['replicas']:
 			# 	desplegar_replica()
+
+
+def eliminar_despliegues(nombre, replicas):
+
+	cliente_despliegue = client.AppsV1Api()
+	cliente_despliegue.delete_namespaced_deployment(tipos.deployment_aplicacion(nombre, replicas)['metadata']['name'], namespace)
 
 
 if __name__ == '__main__':

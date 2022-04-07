@@ -29,8 +29,9 @@ def mi_watcher(cliente):
         if tipo != 'DELETED':
             # Lógica para llevar el recurso al estado deseado.
             mi_controlador_aplicaciones.mostrar_datos(objeto['metadata']['name'], cliente)
-            mi_controlador_aplicaciones.conciliar_spec_status(objeto['metadata']['name'], cliente)
-        # else:
+            mi_controlador_aplicaciones.conciliar_spec_status(objeto['metadata']['name'], objeto['spec']['replicas'], cliente)
+        if tipo == 'DELETED':
+            mi_controlador_aplicaciones.eliminar_despliegues(objeto['metadata']['name'], objeto['spec']['replicas'])
             # Lógica para borrar lo asociado al recurso.
 
     # listado=cliente.list_namespaced_custom_object(grupo,version,namespace,plural,pretty="true", watch="true")

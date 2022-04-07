@@ -16,10 +16,12 @@ def solicitar_nueva_aplicacion():
     nombre_app=input()
     print("Cuantos componentes quieres en la aplicacion?")
     N_de_componentes=input()
+    print("Cuantas replicas quieres?")
+    N_de_replicas=input()
     aplicacion = tipos.aplicacion(int(N_de_componentes))
     aplicacion['apiVersion'] = grupo + '/' + version
     aplicacion['metadata']['name'] = "aplicacion-solicitada-" + nombre_app
-    aplicacion['spec']['replicas'] = 2
+    aplicacion['spec']['replicas'] = int(N_de_replicas)
     for i in range(int(N_de_componentes)):
         #i=int(i)
         if i == 0:

@@ -16,4 +16,4 @@ spec:
       image: imagen-componente-C
       previous: B
       next: none
-  replicas: 2
+  replicas: 3
