@@ -9,6 +9,8 @@ plural = "aplicaciones"
 def desplegar(aplicacion):
     config.load_kube_config("/etc/rancher/k3s/k3s.yaml")
     cliente = client.CustomObjectsApi()
+    # Creo un objeto aplicacion en la BBDD de kubernetes.
+    # El watcher detectará un evento ADDED y le mandará al controlador conciliar los estados spec y status.
     cliente.create_namespaced_custom_object(grupo, version, namespace, plural, aplicacion)
 
 def solicitar_nueva_aplicacion():

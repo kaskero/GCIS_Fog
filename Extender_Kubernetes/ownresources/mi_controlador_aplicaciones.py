@@ -97,7 +97,13 @@ def conciliar_spec_status(nombre, replicas_solicitadas, cliente):
 	# Compruebo.
 
 	# ESTO ES UNA PRUEBA HASTA QUE PUEDA ACCEDER AL STATUS
-	cliente_despliegue.create_namespaced_deployment(namespace, tipos.deployment_aplicacion(nombre, replicas_solicitadas))
+	deployment_yaml = tipos.deployment_aplicacion(nombre, replicas_solicitadas)
+	cliente_despliegue.create_namespaced_deployment(namespace, deployment_yaml)
+
+
+	#Busco el status del deployment.
+	status_deployment = cliente_despliegue.read_namespaced_deployment_status(deployment_yaml['metadata']['name'], namespace)
+	replicas_desplegadas = status_deployment.status.available_replicas
 
 	if aplicacion_deseada['spec']['replicas'] != aplicacion_desplegada['spec']['replicas']:
 		if aplicacion_deseada['spec']['replicas'] > aplicacion_desplegada['spec']['replicas']:
