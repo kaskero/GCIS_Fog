@@ -81,7 +81,7 @@ def mostrar_datos(nombre, cliente):
 
 def conciliar_spec_status(nombre, replicas_solicitadas, cliente):
 
-	# Esta funcien es llamada por el watcher cuando hay un evento ADDED o MODIFIED.
+	# Esta funcion es llamada por el watcher cuando hay un evento ADDED o MODIFIED.
 	# Habria que chequear las replicas, las versiones...
 	# De momento esta version solo va a mirar el numero de replicas.
 	# Chequea si la aplicacion que ha generado el evento esta al día en .spec y .status

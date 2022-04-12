@@ -27,11 +27,11 @@ def solicitar_nueva_aplicacion():
     for i in range(int(N_de_componentes)):
         #i=int(i)
         if i == 0:
-            aplicacion['spec']['componentes'][i] = tipos.componente('D', "imagen-componente-D", "none", "E") #OJO, si asigno None, luego no está en el diccionario. Mejor asigno none como string.
+            aplicacion['spec']['componentes'][i] = tipos.componente('d', "imagen-componente-d", "none", "e") #OJO, si asigno None, luego no está en el diccionario. Mejor asigno none como string.
         elif i == int(N_de_componentes)-1:
-            aplicacion['spec']['componentes'][i] = tipos.componente(chr(68+i), "imagen-componente-" + chr(68+i), chr(68+i-1), "none")
+            aplicacion['spec']['componentes'][i] = tipos.componente(chr(100+i), "imagen-componente-" + chr(100+i), chr(100+i-1), "none")
         else:
-            aplicacion['spec']['componentes'][i] = tipos.componente(chr(68+i), "imagen-componente-" + chr(68+i), chr(68+i-1), chr(68+i+1))
+            aplicacion['spec']['componentes'][i] = tipos.componente(chr(100+i), "imagen-componente-" + chr(100+i), chr(100+i-1), chr(100+i+1))
 
     desplegar(aplicacion)
 
