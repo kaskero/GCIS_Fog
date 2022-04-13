@@ -14,12 +14,27 @@ def desplegar(aplicacion):
     cliente.create_namespaced_custom_object(grupo, version, namespace, plural, aplicacion)
 
 def solicitar_nueva_aplicacion():
-    print("Como quieres que se llame la aplicacion? (El nombre en kubernetes sera aplicacion-solicitada-TUNOMBRE)")
-    nombre_app=input()
-    print("Cuantos componentes quieres en la aplicacion?")
-    N_de_componentes=input()
-    print("Cuantas replicas quieres?")
-    N_de_replicas=input()
+    nombre_app = None
+    N_de_componentes = '0'
+    N_de_replicas = '0'
+    while nombre_app == None:
+        print("¿Como quieres que se llame la aplicacion? (El nombre en kubernetes sera aplicacion-solicitada-TUNOMBRE)")
+        nombre_app = input()
+        if not (str.isalnum(nombre_app) and str.islower(nombre_app)):
+            nombre_app = None
+            print('El nombre debe estar compuesto de caracteres alfanumericos y minúsculas.')
+    while N_de_componentes == '0':
+        print("¿Cuantos componentes quieres en la aplicacion?")
+        N_de_componentes=input()
+        if int(N_de_componentes) > 23 or int(N_de_componentes) <= 1:
+            N_de_componentes = '0'
+            print('El numero de componentes debe ser menor de 23 y mayor que 1.')
+    while N_de_replicas == '0':
+        print("¿Cuantas replicas quieres?")
+        N_de_replicas=input()
+        if int(N_de_replicas) > 10 or int(N_de_replicas) <= 0:
+            N_de_replicas = '0'
+            print('El numero de replicas debe estar entre 0 y 10.')
     aplicacion = tipos.aplicacion(int(N_de_componentes))
     aplicacion['apiVersion'] = grupo + '/' + version
     aplicacion['metadata']['name'] = "aplicacion-solicitada-" + nombre_app
