@@ -16,16 +16,9 @@ spec:
     spec:
       containers:
       - name: app-controller
-        image: imagen-controlador-aplicaciones
+        image: julencuadra/gcis-fog:controlador-aplicaciones
         ports:
         - containerPort: 80
-        resources:
-          requests:
-            cpu: 50m
-            memory: 8M
-          limits:
-            cpu: 100m
-            memory: 16M
+        imagePullPolicy: Always
       nodeSelector:
-        node-type: multipass
-
+        node-type: multipass      

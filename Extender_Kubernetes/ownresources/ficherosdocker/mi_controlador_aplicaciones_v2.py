@@ -10,19 +10,20 @@ plural = "aplicaciones"
 
 
 def controlador():
-
-	config.load_kube_config("/etc/rancher/k3s/k3s.yaml")  # Cargamos la configuracion del cluster
+	
+	config.load_incluster_config()
+	# config.load_kube_config("/etc/rancher/k3s/k3s.yaml")  # Cargamos la configuracion del cluster
 
 	cliente = client.CustomObjectsApi()  # Creamos el cliente de la API
 
 	cliente_extension = client.ApiextensionsV1Api() # Creamos el cliente que pueda implementar el CRD.
 
-	try:
-		cliente_extension.create_custom_resource_definition(tipos.CRD_app())
-		print("He pasado la CRD. Compruebalo y pulsa una tecla para continuar.")
-		input()
-	except Exception: #No distingue, pero funciona, como puedo distinguir?
-		print("El CRD ya existe, pasando al watcher.")
+	#try:
+	#	cliente_extension.create_custom_resource_definition(tipos.CRD_app())
+	#	print("He pasado la CRD. Compruebalo y pulsa una tecla para continuar.")
+	#	input()
+	#except Exception: #No distingue, pero funciona, como puedo distinguir?
+	#	print("El CRD ya existe, pasando al watcher.")
 
 	mi_watcher_aplicaciones.mi_watcher(cliente) # Activo el watcher de recursos aplicacion.
 

@@ -2,14 +2,19 @@
 import yaml
 
 def CRD_app():
-    with open("/home/julen/Desktop/GCIS_Fog/Extender_Kubernetes/ownresources/application_definition.yaml", 'r') as stream:
+    path = os.path.abspath(os.path.dirname(__file__))
+    rel_path = os.path.join(path, "application_definition.yaml")
+    with open(rel_path, 'r') as stream:
         CRD_aplicacion = yaml.safe_load(stream)
     return CRD_aplicacion
 
 def CRD_comp():
-    with open("/home/julen/Desktop/GCIS_Fog/Extender_Kubernetes/ownresources/component_definition.yaml", 'r') as stream:
+    path = os.path.abspath(os.path.dirname(__file__))
+    rel_path = os.path.join(path, "component_definition.yaml")
+    with open(rel_path, 'r') as stream:
         CRD_componente = yaml.safe_load(stream)
     return CRD_componente
+
 
 def aplicacion(N):
     # N identifica el numero de componentes de la aplicacion.

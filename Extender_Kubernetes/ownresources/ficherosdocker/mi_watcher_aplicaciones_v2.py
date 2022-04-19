@@ -12,17 +12,18 @@ plural = "aplicaciones"
 
 def mi_watcher(cliente):
 
-    config.load_kube_config("/etc/rancher/k3s/k3s.yaml") # Cargo la configuración
+    config.load_incluster_config()
+    #config.load_kube_config("/etc/rancher/k3s/k3s.yaml") # Cargo la configuración
     watcher=watch.Watch() # Activo el watcher.
 
-    print("Estoy en el watcher.") # Comprobación por consola.
+    # print("Estoy en el watcher.") # Comprobación por consola.
 
     for event in watcher.stream(cliente.list_namespaced_custom_object, grupo, version, namespace, plural):
 
         objeto = event['object']
         tipo = event['type']
 
-        print("Nuevo evento: ", "Hora del evento: ", datetime.datetime.now(), "Tipo de evento: ", tipo,
+        # print("Nuevo evento: ", "Hora del evento: ", datetime.datetime.now(), "Tipo de evento: ", tipo,
               "Nombre del objeto: ", objeto['metadata']['name'])
 
         if tipo != 'DELETED':
@@ -32,4 +33,4 @@ def mi_watcher(cliente):
             mi_controlador_aplicaciones.eliminar_componentes(objeto)
             # Lógica para borrar lo asociado al recurso.
 
-    print("Despues del watcher.")
+    # print("Despues del watcher.")
