@@ -21,4 +21,4 @@ spec:
         - containerPort: 80
         imagePullPolicy: Always
       nodeSelector:
-        node-type: multipass      
+        node-role.kubernetes.io/master : "true"
